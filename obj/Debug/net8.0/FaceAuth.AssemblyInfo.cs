@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FaceAuth")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db9455a34feb05f5b8db6b56fb42dbace18a9f1d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cafb0c1d2bf529e9a6e2dee9cca32babc74ed859")]
 [assembly: System.Reflection.AssemblyProductAttribute("FaceAuth")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FaceAuth")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
