@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<div class="card p-4 shadow-lg" style="width: 350px;">
+    <h3 class="text-center">Login com Reconhecimento Facial</h3>
+
+    <!-- Login com Reconhecimento Facial -->
+    <button class="btn btn-success w-100" id="face-login-btn">Entrar com Reconhecimento Facial</button>
+
+    <!-- Webcam -->
+    <div id="webcam-container" class="mt-3 text-center d-none">
+        <video id="webcam" width="300" height="225" autoplay></video>
+        <button class="btn btn-danger mt-2" id="capture-photo">Capturar</button>
+    </div>
+
+    <!-- Área para Exibir a Foto Capturada -->
+    <div id="photo-preview" class="mt-2 text-center d-none">
+        <img id="photo" class="img-thumbnail">
+        <button class="btn btn-primary mt-2" id="confirm-photo">Confirmar</button>
+    </div>
+</div>
+
+<script>
+    const faceLoginBtn = document.getElementById("face-login-btn");
+    const webcamContainer = document.getElementById("webcam-container");
+    const video = document.getElementById("webcam");
+    const capturePhotoBtn = document.getElementById("capture-photo");
+    const photoPreview = document.getElementById("photo-preview");
+    const photo = document.getElementById("photo");
+    const confirmPhotoBtn = document.getElementById("confirm-photo");
+
+    // Ativar Webcam ao Clicar no Botão
+    faceLoginBtn.addEventListener("click", () => {
+        webcamContainer.classList.remove("d-none");
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            }).catch(err => {
+                alert("Erro ao acessar a câmera: " + err);
+            });
+    });
+
+    // Capturar Foto da Webcam
+    capturePhotoBtn.addEventListener("click", () => {
+        let canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        let context = canvas.getContext("2d");
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        let imageData = canvas.toDataURL("image/png");
+        photo.src = imageData;
+        photoPreview.classList.remove("d-none");
+    });
+
+    // Enviar Foto para Autenticação Facial
+    confirmPhotoBtn.addEventListener("click", () => {
+    let base64Image = photo.src; // Certifique-se de que o src é uma string base64 válida
+
+    fetch('/Login/FaceLogin', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: base64Image })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = "/Home";
+        } else {
+            alert("Autenticação facial falhou!");
+        }
+    })
+    .catch(error => console.error("Erro:", error));
+});
+</script>
